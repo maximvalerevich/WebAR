@@ -1,0 +1,31 @@
+{
+  "name": "web-ar",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "generate:glb": "node scripts/generatePlaneGLB.mjs",
+    "postinstall": "node scripts/generatePlaneGLB.mjs"
+  },
+  "dependencies": {
+    "next": "14.2.5",
+    "react": "^18",
+    "react-dom": "^18",
+    "konva": "^9.3.6",
+    "react-konva": "^18.2.10",
+    "zod": "^3.23.8",
+    "html-to-image": "^1.11.11",
+    "use-image": "^1.1.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "typescript": "^5",
+    "tailwindcss": "^3.4.1",
+    "postcss": "^8",
+    "autoprefixer": "^10.0.1"
+  }
+}
