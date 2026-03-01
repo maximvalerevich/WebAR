@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, useCallback } from "react";
-import { Layer, Line, Circle, Text, Group } from "react-konva";
+import { Layer, Line, Circle, Text, Group, Rect } from "react-konva";
 import type { KonvaEventObject } from "konva/lib/Node";
 import type { UseScaleCalculatorReturn } from "@/hooks/useScaleCalculator";
 
@@ -81,18 +81,19 @@ export function RulerTool({
     if (!active && !start) return null;
 
     return (
-        <Layer
+        <Group
             onMouseDown={handleMouseDown}
             onMouseMove={handleMouseMove}
             onMouseUp={handleMouseUp}
         >
             {active && (
-                <Line
-                    points={[0, 0, stageWidth, 0, stageWidth, stageHeight, 0, stageHeight]}
-                    closed
-                    fill="rgba(0,0,0,0.001)"
-                    stroke="transparent"
-                    listening
+                <Rect
+                    x={0}
+                    y={0}
+                    width={stageWidth}
+                    height={stageHeight}
+                    fill="transparent"
+                    listening={active}
                 />
             )}
 
@@ -127,6 +128,6 @@ export function RulerTool({
                     )}
                 </Group>
             )}
-        </Layer>
+        </Group>
     );
 }

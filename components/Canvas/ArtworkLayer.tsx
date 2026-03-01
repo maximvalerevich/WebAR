@@ -107,7 +107,7 @@ export function ArtworkLayer({
                 bottomLeft: { x: -artW / 2, y: artH / 2 },
             });
         }
-    }, [artwork.id, resetTrigger]);
+    }, [artwork.id, artW, artH, resetTrigger]);
 
     // Handle Ruler scaling / Frame size changes when pinned
     useEffect(() => {
@@ -219,12 +219,25 @@ export function ArtworkLayer({
                     }
                 }}
             >
+                {/* Shadow Backing - A solid polygon behind the image to cast the shadow perfectly, hidden by the image itself */}
+                <Line
+                    points={[
+                        corners.topLeft.x, corners.topLeft.y,
+                        corners.topRight.x, corners.topRight.y,
+                        corners.bottomRight.x, corners.bottomRight.y,
+                        corners.bottomLeft.x, corners.bottomLeft.y,
+                    ]}
+                    closed
+                    fill="white"
+                    {...shadowProps}
+                    listening={false}
+                />
+
                 <Shape
                     sceneFunc={drawPerspective}
                     hitFunc={hitPerspective}
                     width={artW}
                     height={artH}
-                    {...shadowProps}
                     listening={!cornerPinActive}
                 />
 

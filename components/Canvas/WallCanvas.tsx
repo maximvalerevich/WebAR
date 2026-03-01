@@ -170,18 +170,20 @@ export function WallCanvas({
                     />
                 )}
 
-                {/* Ruler Tool overlay */}
-                <RulerTool
-                    key={wallImageSrc || "ruler"}
-                    scaleCalc={scaleCalc}
-                    stageWidth={stageSize.width}
-                    stageHeight={stageSize.height}
-                    active={activeTool === "ruler"}
-                    onSelectionComplete={(pixels) => {
-                        setRulerPixels(pixels);
-                        setShowRulerModal(true);
-                    }}
-                />
+                {/* Ruler Tool overlay - Separate Layer to ensure interaction over everything */}
+                <Layer listening={activeTool === "ruler"}>
+                    <RulerTool
+                        key={wallImageSrc || "ruler"}
+                        scaleCalc={scaleCalc}
+                        stageWidth={stageSize.width}
+                        stageHeight={stageSize.height}
+                        active={activeTool === "ruler"}
+                        onSelectionComplete={(pixels) => {
+                            setRulerPixels(pixels);
+                            setShowRulerModal(true);
+                        }}
+                    />
+                </Layer>
             </Stage>
 
             {/* Calibration modal - Standard DOM, OUTSIDE Stage */}
