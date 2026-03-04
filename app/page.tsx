@@ -109,6 +109,7 @@ export default function ArtTryOnPage() {
     const [exportFormat, setExportFormat] = useState<"jpeg" | "png">("jpeg");
     const [isExporting, setIsExporting] = useState(false);
     const [resetCornersTrigger, setResetCornersTrigger] = useState(0);
+    const [mobilePanelOpen, setMobilePanelOpen] = useState<"artworks" | "settings" | null>(null);
 
     const [shadow, setShadow] = useState<ShadowSettings>({
         enabled: true,
@@ -137,6 +138,7 @@ export default function ArtTryOnPage() {
     const handleSelectArtwork = useCallback((art: Artwork) => {
         setSelectedArtwork(art);
         setSelectedFrameId(art.frame_options[0]?.id ?? "none");
+        setMobilePanelOpen(null);
     }, []);
 
     const handleExport = useCallback(async () => {
@@ -159,16 +161,32 @@ export default function ArtTryOnPage() {
     return (
         <main className="h-screen flex flex-col bg-canvas-bg overflow-hidden">
             {/* ── Top Bar ── */}
-            <header className="flex-none h-14 flex items-center justify-between px-5 border-b border-canvas-border bg-canvas-surface/80 backdrop-blur-sm z-20">
-                <div className="flex items-center gap-3">
+            <header className="flex-none h-14 flex items-center justify-between px-3 md:px-5 border-b border-canvas-border bg-canvas-surface/80 backdrop-blur-sm z-20">
+                <div className="flex items-center gap-2 md:gap-3">
+                    {/* Mobile: Artworks toggle */}
+                    <button
+                        onClick={() => setMobilePanelOpen(v => v === "artworks" ? null : "artworks")}
+                        className={`md:hidden flex items-center justify-center w-8 h-8 rounded-lg border transition-all ${
+                            mobilePanelOpen === "artworks"
+                                ? "border-canvas-accent bg-canvas-accent/20 text-canvas-accent"
+                                : "border-canvas-border text-canvas-text-secondary hover:text-canvas-text"
+                        }`}
+                        title="Artworks"
+                    >
+                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8}
+                                d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                        </svg>
+                    </button>
+
                     <div className="w-7 h-7 rounded-lg bg-canvas-accent flex items-center justify-center shadow-glow">
                         <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
                                 d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                         </svg>
                     </div>
-                    <span className="font-semibold text-canvas-text tracking-tight">ArtVision</span>
-                    <span className="text-canvas-border">|</span>
+                    <span className="font-semibold text-canvas-text tracking-tight hidden sm:inline">ArtVision</span>
+                    <span className="text-canvas-border hidden sm:inline">|</span>
                     <span className="text-xs text-canvas-text-secondary hidden sm:block">Virtual Art Try-On</span>
                 </div>
 
@@ -206,7 +224,7 @@ export default function ArtTryOnPage() {
                         <span className="hidden sm:inline">AR</span>
                     </button>
 
-                    <div className="flex items-center rounded-lg border border-canvas-border overflow-hidden">
+                    <div className="hidden sm:flex items-center rounded-lg border border-canvas-border overflow-hidden">
                         <select
                             value={exportFormat}
                             onChange={(e) => setExportFormat(e.target.value as "jpeg" | "png")}
@@ -234,13 +252,30 @@ export default function ArtTryOnPage() {
                             Export
                         </button>
                     </div>
+
+                    {/* Mobile: Settings toggle */}
+                    <button
+                        onClick={() => setMobilePanelOpen(v => v === "settings" ? null : "settings")}
+                        className={`md:hidden flex items-center justify-center w-8 h-8 rounded-lg border transition-all ${
+                            mobilePanelOpen === "settings"
+                                ? "border-canvas-accent bg-canvas-accent/20 text-canvas-accent"
+                                : "border-canvas-border text-canvas-text-secondary hover:text-canvas-text"
+                        }`}
+                        title="Settings"
+                    >
+                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8}
+                                d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                    </button>
                 </div>
             </header>
 
             {/* ── Body ── */}
-            <div className="flex-1 flex overflow-hidden">
-                {/* Left sidebar: Artwork selector */}
-                <aside className="flex-none w-52 border-r border-canvas-border bg-canvas-surface/50 flex flex-col overflow-hidden">
+            <div className="flex-1 flex overflow-hidden relative">
+                {/* Left sidebar: Artwork selector — desktop */}
+                <aside className="flex-none w-52 border-r border-canvas-border bg-canvas-surface/50 hidden md:flex flex-col overflow-hidden">
                     <div className="p-3 border-b border-canvas-border">
                         <h2 className="text-xs font-semibold text-canvas-text-secondary uppercase tracking-wider">
                             Artworks
@@ -271,8 +306,8 @@ export default function ArtTryOnPage() {
                     />
                 </div>
 
-                {/* Right sidebar: Frame selector + Shadow settings + AR */}
-                <aside className="flex-none w-64 border-l border-canvas-border bg-canvas-surface/50 flex flex-col overflow-hidden">
+                {/* Right sidebar: Frame selector + Shadow settings + AR — desktop */}
+                <aside className="flex-none w-64 border-l border-canvas-border bg-canvas-surface/50 hidden md:flex flex-col overflow-hidden">
                     {/* Calibration status */}
                     <div className="p-3 border-b border-canvas-border">
                         <div className="flex items-center justify-between mb-1">
@@ -385,6 +420,173 @@ export default function ArtTryOnPage() {
                         </div>
                     </div>
                 </aside>
+
+                {/* ── Mobile overlay panels ── */}
+                {mobilePanelOpen && (
+                    <>
+                        {/* Backdrop */}
+                        <div
+                            className="md:hidden fixed inset-0 bg-black/60 z-30 animate-fade-in-backdrop"
+                            onClick={() => setMobilePanelOpen(null)}
+                        />
+
+                        {/* Artworks panel — slides from left */}
+                        {mobilePanelOpen === "artworks" && (
+                            <aside className="md:hidden fixed top-14 left-0 bottom-0 w-72 max-w-[85vw] bg-canvas-surface border-r border-canvas-border flex flex-col overflow-hidden z-40 animate-slide-in-left">
+                                <div className="p-3 border-b border-canvas-border flex items-center justify-between">
+                                    <h2 className="text-xs font-semibold text-canvas-text-secondary uppercase tracking-wider">
+                                        Artworks
+                                    </h2>
+                                    <button
+                                        onClick={() => setMobilePanelOpen(null)}
+                                        className="w-6 h-6 flex items-center justify-center rounded-md text-canvas-muted hover:text-canvas-text hover:bg-canvas-bg transition-colors"
+                                    >
+                                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                        </svg>
+                                    </button>
+                                </div>
+                                <div className="flex-1 overflow-y-auto p-2 flex flex-col gap-2">
+                                    {artworks.map((art) => (
+                                        <ArtworkCard
+                                            key={art.id}
+                                            artwork={art}
+                                            selected={selectedArtwork?.id === art.id}
+                                            onClick={() => handleSelectArtwork(art)}
+                                        />
+                                    ))}
+                                </div>
+                            </aside>
+                        )}
+
+                        {/* Settings panel — slides from right */}
+                        {mobilePanelOpen === "settings" && (
+                            <aside className="md:hidden fixed top-14 right-0 bottom-0 w-72 max-w-[85vw] bg-canvas-surface border-l border-canvas-border flex flex-col overflow-hidden z-40 animate-slide-in-right">
+                                <div className="p-3 border-b border-canvas-border flex items-center justify-between">
+                                    <h2 className="text-xs font-semibold text-canvas-text-secondary uppercase tracking-wider">
+                                        Settings
+                                    </h2>
+                                    <button
+                                        onClick={() => setMobilePanelOpen(null)}
+                                        className="w-6 h-6 flex items-center justify-center rounded-md text-canvas-muted hover:text-canvas-text hover:bg-canvas-bg transition-colors"
+                                    >
+                                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                        </svg>
+                                    </button>
+                                </div>
+                                <div className="flex-1 overflow-y-auto">
+                                    {/* Calibration */}
+                                    <div className="p-3 border-b border-canvas-border">
+                                        <div className="flex items-center justify-between mb-1">
+                                            <span className="text-xs font-semibold text-canvas-text-secondary uppercase tracking-wider">
+                                                Calibration
+                                            </span>
+                                            {scaleCalc.calibration.pixelsPerCm && (
+                                                <button
+                                                    onClick={scaleCalc.resetCalibration}
+                                                    className="text-xs text-canvas-muted hover:text-canvas-accent transition-colors"
+                                                >
+                                                    Reset
+                                                </button>
+                                            )}
+                                        </div>
+                                        {scaleCalc.calibration.pixelsPerCm ? (
+                                            <div className="flex items-center gap-1.5">
+                                                <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+                                                <span className="text-xs font-mono text-green-400">
+                                                    {scaleCalc.calibration.pixelsPerCm.toFixed(2)} px/cm
+                                                </span>
+                                            </div>
+                                        ) : (
+                                            <p className="text-xs text-canvas-muted">
+                                                Use the{" "}
+                                                <button
+                                                    onClick={() => { setActiveTool("ruler"); setMobilePanelOpen(null); }}
+                                                    className="text-canvas-accent hover:underline"
+                                                >
+                                                    Ruler tool
+                                                </button>{" "}
+                                                to calibrate
+                                            </p>
+                                        )}
+                                    </div>
+
+                                    {/* Frame selector */}
+                                    {selectedArtwork && (
+                                        <div className="p-3 border-b border-canvas-border">
+                                            <h3 className="text-xs font-semibold text-canvas-text-secondary uppercase tracking-wider mb-2">
+                                                Frame
+                                            </h3>
+                                            <div className="flex flex-col gap-1.5">
+                                                {selectedArtwork.frame_options.map((fo) => (
+                                                    <button
+                                                        key={fo.id}
+                                                        onClick={() => setSelectedFrameId(fo.id)}
+                                                        className={`flex items-center gap-2 px-2.5 py-1.5 rounded-lg border text-xs transition-all ${selectedFrameId === fo.id
+                                                            ? "border-canvas-accent bg-canvas-accent/10 text-canvas-accent"
+                                                            : "border-canvas-border text-canvas-text-secondary hover:border-canvas-accent/40"
+                                                            }`}
+                                                    >
+                                                        <span
+                                                            className="w-4 h-4 rounded border border-white/10 flex-none"
+                                                            style={{
+                                                                background: fo.color === "transparent" ? "transparent" : fo.color,
+                                                                border: fo.color === "transparent" ? "1px dashed #444" : undefined
+                                                            }}
+                                                        />
+                                                        {fo.style}
+                                                        {fo.width_mm > 0 && (
+                                                            <span className="ml-auto font-mono text-canvas-muted">{fo.width_mm}mm</span>
+                                                        )}
+                                                    </button>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {/* Shadow settings */}
+                                    <div className="border-b border-canvas-border">
+                                        <div className="px-3 pt-3 pb-1">
+                                            <h3 className="text-xs font-semibold text-canvas-text-secondary uppercase tracking-wider">
+                                                Shadow
+                                            </h3>
+                                        </div>
+                                        <ShadowSettingsPanel shadow={shadow} onChange={setShadow} />
+                                    </div>
+
+                                    {/* Export (mobile) */}
+                                    <div className="p-3 border-b border-canvas-border sm:hidden">
+                                        <h3 className="text-xs font-semibold text-canvas-text-secondary uppercase tracking-wider mb-2">
+                                            Export
+                                        </h3>
+                                        <div className="flex items-center rounded-lg border border-canvas-border overflow-hidden">
+                                            <select
+                                                value={exportFormat}
+                                                onChange={(e) => setExportFormat(e.target.value as "jpeg" | "png")}
+                                                className="bg-canvas-bg text-canvas-text-secondary text-xs px-2 py-1.5 border-r border-canvas-border outline-none cursor-pointer flex-1"
+                                            >
+                                                <option value="jpeg">JPG</option>
+                                                <option value="png">PNG</option>
+                                            </select>
+                                            <button
+                                                onClick={() => { handleExport(); setMobilePanelOpen(null); }}
+                                                disabled={isExporting}
+                                                className="flex items-center gap-1.5 px-3 py-1.5 bg-canvas-bg text-canvas-text-secondary hover:text-canvas-accent hover:bg-canvas-accent/10 text-xs font-medium transition-all disabled:opacity-50"
+                                            >
+                                                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8}
+                                                        d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                                                </svg>
+                                                Export
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </aside>
+                        )}
+                    </>
+                )}
             </div>
         </main>
     );

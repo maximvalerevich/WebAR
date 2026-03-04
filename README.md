@@ -47,6 +47,8 @@ ArtVision is a modern web application for virtual art "try-on" in real interior 
 
 4. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
+   npm run dev -- -H 0.0.0.0
+   npx next dev -H 0.0.0.0
 ## 📄 License
 
 This project is licensed under the MIT License.
