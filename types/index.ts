@@ -79,3 +79,8 @@ export interface ShadowSettings {
 // ─── App State ───────────────────────────────────────────────────────────────
 
 export type ActiveTool = "select" | "ruler" | "cornerpin" | "shadow" | "none";
+
+// ─── View Mode ───────────────────────────────────────────────────────────────
+
+/** "canvas" = static wall photo with Konva canvas; "live" = real-time camera feed */
+export type ViewMode = "canvas" | "live";

@@ -49,6 +49,34 @@ ArtVision is a modern web application for virtual art "try-on" in real interior 
 
    npm run dev -- -H 0.0.0.0
    npx next dev -H 0.0.0.0
-## 📄 License
+## � Mobile Camera Testing (Live Mode)
+
+Для работы режима Live Camera (примерка через камеру в реальном времени) браузеру **необходим безопасный контекст (HTTPS)**. При обычном запуске `npm run dev` камера на мобильном устройстве работать не будет из-за ограничений безопасности (API `getUserMedia`).
+
+### Самый простой способ (ngrok)
+
+1. Запустите проект локально:
+   ```bash
+   npm run dev
+   ```
+2. В новом окне терминала запустите туннель через `ngrok` на порт 3000:
+   ```bash
+   npx ngrok http 3000
+   ```
+3. Откройте полученную ссылку `https://...ngrok-free.app` на своём мобильном телефоне.
+
+### Альтернатива (Cloudflare Tunnel)
+
+Если у вас установлен `cloudflared`:
+```bash
+cloudflared tunnel --url http://localhost:3000
+```
+
+### Важные примечания
+- Разрешите доступ к камере в браузере мобильного устройства при появлении запроса.
+- Используйте современные браузеры (Safari на iOS, Chrome на Android).
+- Режим Live Camera лучше всего работает при хорошем освещении.
+
+## �📄 License
 
 This project is licensed under the MIT License.

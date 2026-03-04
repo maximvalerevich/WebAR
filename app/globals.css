@@ -22,19 +22,23 @@
     width: 6px;
     height: 6px;
   }
+
   ::-webkit-scrollbar-track {
     background: #18181f;
   }
+
   ::-webkit-scrollbar-thumb {
     background: #2a2a35;
     border-radius: 3px;
   }
+
   ::-webkit-scrollbar-thumb:hover {
     background: #7c6af7;
   }
 }
 
 @layer utilities {
+
   /* Range input thumb */
   input[type="range"]::-webkit-slider-thumb {
     @apply appearance-none w-3 h-3 rounded-full bg-canvas-accent cursor-pointer transition-transform hover:scale-125;
@@ -43,40 +47,102 @@
 
 /* Micro-animation utilities */
 @keyframes fade-in {
-  from { opacity: 0; transform: translateY(6px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
+
 .animate-fade-in {
   animation: fade-in 0.25s ease-out both;
 }
 
 @keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(124, 106, 247, 0.4); }
-  50%       { box-shadow: 0 0 16px 4px rgba(124, 106, 247, 0.25); }
+
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(124, 106, 247, 0.4);
+  }
+
+  50% {
+    box-shadow: 0 0 16px 4px rgba(124, 106, 247, 0.25);
+  }
 }
+
 .animate-pulse-glow {
   animation: pulse-glow 2s ease-in-out infinite;
 }
 
 /* Mobile panel animations */
 @keyframes slide-in-left {
-  from { transform: translateX(-100%); }
-  to   { transform: translateX(0); }
+  from {
+    transform: translateX(-100%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
 }
+
 @keyframes slide-in-right {
-  from { transform: translateX(100%); }
-  to   { transform: translateX(0); }
+  from {
+    transform: translateX(100%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
 }
+
 @keyframes fade-in-backdrop {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
+
 .animate-slide-in-left {
   animation: slide-in-left 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
+
 .animate-slide-in-right {
   animation: slide-in-right 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
+
 .animate-fade-in-backdrop {
   animation: fade-in-backdrop 0.2s ease-out both;
+}
+
+/* Live Camera mode */
+@keyframes scale-in {
+  from {
+    transform: translateX(-50%) scale(0);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(-50%) scale(1);
+    opacity: 1;
+  }
+}
+
+.animate-scale-in {
+  animation: scale-in 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }

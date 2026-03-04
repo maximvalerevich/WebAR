@@ -78,6 +78,42 @@ export function RulerTool({
         }
     }, [drawing, active, pixelLength, onSelectionComplete]);
 
+    // ─── Touch handlers (mobile) ─────────────────────────────────────────
+
+    const handleTouchStart = useCallback(
+        (e: KonvaEventObject<TouchEvent>) => {
+            if (!active) return;
+            e.evt.preventDefault();
+            const pos = e.target.getStage()?.getPointerPosition();
+            if (!pos) return;
+            setStart(pos);
+            setEnd(pos);
+            setDrawing(true);
+            setIsDrawingRef.current(true);
+        },
+        [active]
+    );
+
+    const handleTouchMove = useCallback(
+        (e: KonvaEventObject<TouchEvent>) => {
+            if (!drawing || !active) return;
+            e.evt.preventDefault();
+            const pos = e.target.getStage()?.getPointerPosition();
+            if (!pos) return;
+            setEnd(pos);
+        },
+        [drawing, active]
+    );
+
+    const handleTouchEnd = useCallback(() => {
+        if (!drawing || !active) return;
+        setDrawing(false);
+        setIsDrawingRef.current(false);
+        if (pixelLength > 10) {
+            onSelectionComplete(pixelLength);
+        }
+    }, [drawing, active, pixelLength, onSelectionComplete]);
+
     if (!active && !start) return null;
 
     return (
@@ -85,6 +121,9 @@ export function RulerTool({
             onMouseDown={handleMouseDown}
             onMouseMove={handleMouseMove}
             onMouseUp={handleMouseUp}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
         >
             {active && (
                 <Rect
